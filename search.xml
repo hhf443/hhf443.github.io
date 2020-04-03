@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>hexo的基本配置--相册</title>
+      <link href="/2020/04/03/hexo%E7%9A%84%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE-%E7%9B%B8%E5%86%8C/"/>
+      <url>/2020/04/03/hexo%E7%9A%84%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE-%E7%9B%B8%E5%86%8C/</url>
+      
+        <content type="html"><![CDATA[<h2 id="效果展示"><a href="#效果展示" class="headerlink" title="效果展示"></a>效果展示</h2><h2 id="生成目录配置"><a href="#生成目录配置" class="headerlink" title="生成目录配置"></a>生成目录配置</h2><h2 id="相簿配置"><a href="#相簿配置" class="headerlink" title="相簿配置"></a>相簿配置</h2><p>在自己博客主目录下</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new page album</span><br></pre></td></tr></table></figure><p>会在source目录下生成source\album\index.md<br>生成的index.md即是相册模块的配置文件, 在这个文件中添加以下代码</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: 相册</span><br><span class="line">date: 2020-04-03 17:45:19</span><br><span class="line">comments: <span class="literal">false</span></span><br><span class="line">---</span><br><span class="line">&lt;div class=<span class="string">"gallery-group-main"</span>&gt;</span><br><span class="line">&#123;% galleryGroup <span class="string">'相册1'</span> <span class="string">'做过的一些项目'</span> <span class="string">'/album/相册1'</span> https://xxx[存放图片的途径] %&#125;</span><br><span class="line">&#123;% galleryGroup <span class="string">'相册2'</span> <span class="string">'看见过的好设计'</span> <span class="string">'/album/相册2'</span> https://i.loli.net/2020/04/03/S42oQ9tvH6GEPqV.jpg %&#125;</span><br><span class="line">&#123;% galleryGroup <span class="string">'生活'</span> <span class="string">'关于生活'</span> <span class="string">'/album/life'</span> https://i.loli.net/2019/12/25/8t97aVlp4hgyBGu.jpg %&#125;</span><br><span class="line"></span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure><h2 id="相册配置"><a href="#相册配置" class="headerlink" title="相册配置"></a>相册配置</h2><p>完成上面的配置后会发现少了 <code>/album/相册1</code> 这样的目录，故需自己创建; 在album下再创建相册1文件夹.<br>里面同样需要上面的配置文件index.md, 包含以下代码; 主要就是自己的图片链接, 推荐图床 <a href="https://sm.ms/" target="_blank" rel="noopener">https://sm.ms/</a></p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: 生活</span><br><span class="line">date: 2020-04-03 20:44:55</span><br><span class="line">comments: <span class="literal">false</span></span><br><span class="line">---</span><br><span class="line">&#123;% gallery %&#125;</span><br><span class="line">![](https://gratisography.com/wp-content/uploads/2019/10/gratisography-scary-pumpkin-hand-900x600.jpg)</span><br><span class="line">![](https://gratisography.com/wp-content/uploads/2019/10/gratisography-fresh-fish-dinner-900x600.jpg)</span><br><span class="line">&#123;% endgallery %&#125;</span><br></pre></td></tr></table></figure><p>这样就搞定啦</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> hexo </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Hello World</title>
       <link href="/2020/03/13/hello-world/"/>
       <url>/2020/03/13/hello-world/</url>

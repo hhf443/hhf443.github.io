@@ -330,31 +330,6 @@
     
     
     <entry>
-      <title>链表题目总结</title>
-      <link href="/2020/05/21/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/"/>
-      <url>/2020/05/21/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/</url>
-      
-        <content type="html"><![CDATA[<h3 id="链表倒数第k个结点"><a href="#链表倒数第k个结点" class="headerlink" title="链表倒数第k个结点"></a>链表倒数第k个结点</h3><p>输入一个链表，输出该链表中倒数第k个结点。</p><p>解法：声明两个指针都指向头结点，其中一个指针cur在前一个指针pre走了k个之后在走，这样当前一个指针pre到达尾巴了，当前指针cur也就到了-k个位置</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">public class ListNode &#123;</span></span><br><span class="line"><span class="comment">    int val;</span></span><br><span class="line"><span class="comment">    ListNode next = null;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    ListNode(int val) &#123;</span></span><br><span class="line"><span class="comment">        this.val = val;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">&#125;*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">FindKthToTail</span><span class="params">(ListNode head,<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        ListNode pre = head;    </span><br><span class="line">        ListNode out = head;    <span class="comment">// 头结点存有元素</span></span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(pre!=<span class="keyword">null</span>)&#123;    </span><br><span class="line">            count++;</span><br><span class="line">            pre = pre.next;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(count &gt; k)&#123;    <span class="comment">// 让pre先走了count步后，out才开始走</span></span><br><span class="line">                out = out.next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(k == <span class="number">0</span> || k &gt; count)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> out;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="从头到尾打印链表"><a href="#从头到尾打印链表" class="headerlink" title="从头到尾打印链表"></a><a href="https://www.nowcoder.com/practice/d0267f7f55b3412ba93bd35cfa8e8035?tpId=13&tqId=11156&tPage=1&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking" target="_blank" rel="noopener">从头到尾打印链表</a></h3><p>输入一个链表，按链表从尾到头的顺序返回一个ArrayList。</p><p>递归法，需要注意的是list不能用static声明</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    ArrayList&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ArrayList&lt;Integer&gt; <span class="title">printListFromTailToHead</span><span class="params">(ListNode listNode)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(listNode!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            printListFromTailToHead(listNode.next);</span><br><span class="line">            list.add(listNode.val);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>栈存放</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ArrayList&lt;Integer&gt; <span class="title">printListFromTailToHead</span><span class="params">(ListNode listNode)</span></span>&#123;</span><br><span class="line">        ArrayList&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        Stack&lt;Integer&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">        ListNode p = listNode;</span><br><span class="line">        <span class="keyword">if</span>(p == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ArrayList();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(p!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            stack.push(p.val);</span><br><span class="line">            p = p.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(!stack.isEmpty())&#123;</span><br><span class="line">            list.add(stack.pop());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="反转链表"><a href="#反转链表" class="headerlink" title="反转链表"></a><a href="https://www.nowcoder.com/practice/75e878df47f24fdc9dc3e400ec6058ca?tpId=13&tqId=11168&tPage=3&rp=3&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking" target="_blank" rel="noopener">反转链表</a></h3><p>输入一个链表，反转链表后，输出新链表的表头。</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">ReverseList</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 这里有个需要注意的地方，就是如果两个判断合在一起</span></span><br><span class="line">        <span class="comment">// 即if(head == null || head.next == null) return head</span></span><br><span class="line">        <span class="comment">// head == null 需要在前！如果head已经是null了，它的next肯定也是null，只不过好像返回值不同</span></span><br><span class="line">        <span class="keyword">if</span>(head == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(head.next == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> head;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode p = head;</span><br><span class="line">        ListNode q = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">while</span>(p!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            ListNode temp = p.next;</span><br><span class="line">            p.next = q;</span><br><span class="line">            q = p;</span><br><span class="line">            p = temp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> q;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      
-      
-      <categories>
-          
-          <category> 数据结构与算法 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 链表 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>数组题目合集</title>
       <link href="/2020/05/21/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E7%BB%84%E9%A2%98%E7%9B%AE%E5%90%88%E9%9B%86/"/>
       <url>/2020/05/21/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E7%BB%84%E9%A2%98%E7%9B%AE%E5%90%88%E9%9B%86/</url>
@@ -372,6 +347,31 @@
         <tags>
             
             <tag> 数组 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>链表题目总结</title>
+      <link href="/2020/05/21/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/"/>
+      <url>/2020/05/21/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/</url>
+      
+        <content type="html"><![CDATA[<h3 id="链表倒数第k个结点"><a href="#链表倒数第k个结点" class="headerlink" title="链表倒数第k个结点"></a>链表倒数第k个结点</h3><p>输入一个链表，输出该链表中倒数第k个结点。</p><p>解法：声明两个指针都指向头结点，其中一个指针cur在前一个指针pre走了k个之后在走，这样当前一个指针pre到达尾巴了，当前指针cur也就到了-k个位置</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">public class ListNode &#123;</span></span><br><span class="line"><span class="comment">    int val;</span></span><br><span class="line"><span class="comment">    ListNode next = null;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    ListNode(int val) &#123;</span></span><br><span class="line"><span class="comment">        this.val = val;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">&#125;*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">FindKthToTail</span><span class="params">(ListNode head,<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        ListNode pre = head;    </span><br><span class="line">        ListNode out = head;    <span class="comment">// 头结点存有元素</span></span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(pre!=<span class="keyword">null</span>)&#123;    </span><br><span class="line">            count++;</span><br><span class="line">            pre = pre.next;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(count &gt; k)&#123;    <span class="comment">// 让pre先走了count步后，out才开始走</span></span><br><span class="line">                out = out.next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(k == <span class="number">0</span> || k &gt; count)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> out;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="从头到尾打印链表"><a href="#从头到尾打印链表" class="headerlink" title="从头到尾打印链表"></a><a href="https://www.nowcoder.com/practice/d0267f7f55b3412ba93bd35cfa8e8035?tpId=13&tqId=11156&tPage=1&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking" target="_blank" rel="noopener">从头到尾打印链表</a></h3><p>输入一个链表，按链表从尾到头的顺序返回一个ArrayList。</p><p>递归法，需要注意的是list不能用static声明</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    ArrayList&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ArrayList&lt;Integer&gt; <span class="title">printListFromTailToHead</span><span class="params">(ListNode listNode)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(listNode!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            printListFromTailToHead(listNode.next);</span><br><span class="line">            list.add(listNode.val);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>栈存放</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ArrayList&lt;Integer&gt; <span class="title">printListFromTailToHead</span><span class="params">(ListNode listNode)</span></span>&#123;</span><br><span class="line">        ArrayList&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        Stack&lt;Integer&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">        ListNode p = listNode;</span><br><span class="line">        <span class="keyword">if</span>(p == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ArrayList();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(p!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            stack.push(p.val);</span><br><span class="line">            p = p.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(!stack.isEmpty())&#123;</span><br><span class="line">            list.add(stack.pop());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="反转链表"><a href="#反转链表" class="headerlink" title="反转链表"></a><a href="https://www.nowcoder.com/practice/75e878df47f24fdc9dc3e400ec6058ca?tpId=13&tqId=11168&tPage=3&rp=3&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking" target="_blank" rel="noopener">反转链表</a></h3><p>输入一个链表，反转链表后，输出新链表的表头。</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">ReverseList</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 这里有个需要注意的地方，就是如果两个判断合在一起</span></span><br><span class="line">        <span class="comment">// 即if(head == null || head.next == null) return head</span></span><br><span class="line">        <span class="comment">// head == null 需要在前！如果head已经是null了，它的next肯定也是null，只不过好像返回值不同</span></span><br><span class="line">        <span class="keyword">if</span>(head == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(head.next == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> head;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode p = head;</span><br><span class="line">        ListNode q = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">while</span>(p!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            ListNode temp = p.next;</span><br><span class="line">            p.next = q;</span><br><span class="line">            q = p;</span><br><span class="line">            p = temp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> q;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据结构与算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 链表 </tag>
             
         </tags>
       
@@ -405,6 +405,33 @@
     
     
     <entry>
+      <title>Java中的浅拷贝与深拷贝</title>
+      <link href="/2020/05/21/Java/Java%E4%B8%AD%E7%9A%84%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B7%B1%E6%8B%B7%E8%B4%9D/"/>
+      <url>/2020/05/21/Java/Java%E4%B8%AD%E7%9A%84%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B7%B1%E6%8B%B7%E8%B4%9D/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>Java 中的数据类型分为基本数据类型和引用数据类型。对于这两种数据类型，在进行赋值操作、用作方法参数或返回值时，会有值传递和引用（地址）传递的差别。</p></blockquote><h2 id="一、拷贝分类"><a href="#一、拷贝分类" class="headerlink" title="一、拷贝分类"></a>一、拷贝分类</h2><ul><li>引用拷贝 （==）</li><li>对象拷贝 （.clone()）</li><li>浅拷贝（.clone()）</li><li>深拷贝（.clone().clone()）</li></ul><p><strong>注意：浅拷贝与深拷贝都属于对象拷贝</strong></p><p>浅拷贝：基本数据类型拷贝值，引用类型拷贝内存地址，修改基本数据类型不会对原对象产生影响，修改引用类型会对原对象产生影响。被拷贝对象通过实现 <code>Cloneable</code> 并重写 <code>clone()</code> 方法来实现浅拷贝。</p><p>深拷贝：基本数据类型拷贝值，引用类型拷贝会新建一个对象空间（新地址）拷贝里面的内容，修改基本数据类型和修改引用类型都不会对原对象产生影响。有多层对象的，每个对象都需要实现 <code>Cloneable</code> 并重写 <code>clone()</code> 方法，进而实现了对象的串行层层拷贝。</p><h2 id="二、引用拷贝"><a href="#二、引用拷贝" class="headerlink" title="二、引用拷贝"></a>二、引用拷贝</h2><p>拷贝的是内存地址，所以更改拷贝值也会更改原值</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Teacher teacher = <span class="keyword">new</span> Teacher(<span class="string">"Taylor"</span>,<span class="number">26</span>);</span><br><span class="line">Teacher otherteacher = teacher;</span><br><span class="line">System.out.println(teacher);</span><br><span class="line">System.out.println(otherteacher);</span><br><span class="line"></span><br><span class="line">输出</span><br><span class="line">blog.Teacher@<span class="number">355</span>da254</span><br><span class="line">blog.Teacher@<span class="number">355</span>da254</span><br></pre></td></tr></table></figure><p><img src="/" class="lazyload" data-src="https://gitee.com/hofe/graph/raw/master/img/20200521114815.png"  alt=""></p><h2 id="三、对象拷贝"><a href="#三、对象拷贝" class="headerlink" title="三、对象拷贝"></a>三、对象拷贝</h2><p>地址是不同的，也就是说创建了新的对象， 而不是把原对象的地址赋给了一个新的引用变量,这就叫做对象拷贝（浅拷贝的默认实现）。</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Teacher teacher = <span class="keyword">new</span> Teacher(<span class="string">"Swift"</span>,<span class="number">26</span>);</span><br><span class="line">Teacher otherteacher = (Teacher)teacher.clone();</span><br><span class="line">System.out.println(teacher);</span><br><span class="line">System.out.println(otherteacher);</span><br><span class="line"></span><br><span class="line">blog.Teacher@<span class="number">355</span>da254</span><br><span class="line">blog.Teacher@<span class="number">4</span>dc63996</span><br></pre></td></tr></table></figure><p><img src="/" class="lazyload" data-src="https://gitee.com/hofe/graph/raw/master/img/20200521115052.png"  alt=""></p><h3 id="3-1-浅拷贝"><a href="#3-1-浅拷贝" class="headerlink" title="3.1 浅拷贝"></a>3.1 浅拷贝</h3><p>浅拷贝是按位拷贝对象，它会创建一个新对象，这个对象有着原始对象属性值的一份精确拷贝。如果属性是<strong>基本类型，拷贝的就是基本类型的值</strong>；如果属性是内存地址（<strong>引用类型</strong>），拷贝的就是内存地址 ，因此如果其中一个对象<strong>改变了这个地址，就会影响到另一个对象</strong>。即<strong>默认拷贝构造函数只是对对象进行浅拷贝</strong>复制(逐个成员依次拷贝)，即只复制对象空间而不复制资源。</p><h3 id="3-2-深拷贝"><a href="#3-2-深拷贝" class="headerlink" title="3.2 深拷贝"></a>3.2 深拷贝</h3><p>深拷贝，在拷贝引用类型成员变量时，为引用类型的数据成员另辟了一个独立的内存空间，实现真正内容上的拷贝。<strong>基础数据类型或者引用类型，对其中一个对象修改该值，不会影响另外一个</strong>。每个对象都需要实现 <code>Cloneable</code> 并重写 <code>clone()</code> 方法，进而实现了对象的串行层层拷贝。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Java </category>
+          
+          <category> 基础 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 深浅拷贝 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>理解同步、异步、阻塞和非阻塞</title>
       <link href="/2020/05/21/Java/Java%20IO%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
       <url>/2020/05/21/Java/Java%20IO%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
@@ -426,33 +453,6 @@
             <tag> 转载 </tag>
             
             <tag> IO </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Java中的浅拷贝与深拷贝</title>
-      <link href="/2020/05/21/Java/Java%E4%B8%AD%E7%9A%84%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B7%B1%E6%8B%B7%E8%B4%9D/"/>
-      <url>/2020/05/21/Java/Java%E4%B8%AD%E7%9A%84%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B7%B1%E6%8B%B7%E8%B4%9D/</url>
-      
-        <content type="html"><![CDATA[<blockquote><p>Java 中的数据类型分为基本数据类型和引用数据类型。对于这两种数据类型，在进行赋值操作、用作方法参数或返回值时，会有值传递和引用（地址）传递的差别。</p></blockquote><h2 id="一、拷贝分类"><a href="#一、拷贝分类" class="headerlink" title="一、拷贝分类"></a>一、拷贝分类</h2><ul><li>引用拷贝 （==）</li><li>对象拷贝 （.clone()）</li><li>浅拷贝（.clone()）</li><li>深拷贝（.clone().clone()）</li></ul><p><strong>注意：浅拷贝与深拷贝都属于对象拷贝</strong></p><p>浅拷贝：基本数据类型拷贝值，引用类型拷贝内存地址，修改基本数据类型不会对原对象产生影响，修改引用类型会对原对象产生影响。被拷贝对象通过实现 <code>Cloneable</code> 并重写 <code>clone()</code> 方法来实现浅拷贝。</p><p>深拷贝：基本数据类型拷贝值，引用类型拷贝会新建一个对象空间（新地址）拷贝里面的内容，修改基本数据类型和修改引用类型都不会对原对象产生影响。有多层对象的，每个对象都需要实现 <code>Cloneable</code> 并重写 <code>clone()</code> 方法，进而实现了对象的串行层层拷贝。</p><h2 id="二、引用拷贝"><a href="#二、引用拷贝" class="headerlink" title="二、引用拷贝"></a>二、引用拷贝</h2><p>拷贝的是内存地址，所以更改拷贝值也会更改原值</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Teacher teacher = <span class="keyword">new</span> Teacher(<span class="string">"Taylor"</span>,<span class="number">26</span>);</span><br><span class="line">Teacher otherteacher = teacher;</span><br><span class="line">System.out.println(teacher);</span><br><span class="line">System.out.println(otherteacher);</span><br><span class="line"></span><br><span class="line">输出</span><br><span class="line">blog.Teacher@<span class="number">355</span>da254</span><br><span class="line">blog.Teacher@<span class="number">355</span>da254</span><br></pre></td></tr></table></figure><p><img src="/" class="lazyload" data-src="https://gitee.com/hofe/graph/raw/master/img/20200521114815.png"  alt=""></p><h2 id="三、对象拷贝"><a href="#三、对象拷贝" class="headerlink" title="三、对象拷贝"></a>三、对象拷贝</h2><p>地址是不同的，也就是说创建了新的对象， 而不是把原对象的地址赋给了一个新的引用变量,这就叫做对象拷贝（浅拷贝的默认实现）。</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Teacher teacher = <span class="keyword">new</span> Teacher(<span class="string">"Swift"</span>,<span class="number">26</span>);</span><br><span class="line">Teacher otherteacher = (Teacher)teacher.clone();</span><br><span class="line">System.out.println(teacher);</span><br><span class="line">System.out.println(otherteacher);</span><br><span class="line"></span><br><span class="line">blog.Teacher@<span class="number">355</span>da254</span><br><span class="line">blog.Teacher@<span class="number">4</span>dc63996</span><br></pre></td></tr></table></figure><p><img src="/" class="lazyload" data-src="https://gitee.com/hofe/graph/raw/master/img/20200521115052.png"  alt=""></p><h3 id="3-1-浅拷贝"><a href="#3-1-浅拷贝" class="headerlink" title="3.1 浅拷贝"></a>3.1 浅拷贝</h3><p>浅拷贝是按位拷贝对象，它会创建一个新对象，这个对象有着原始对象属性值的一份精确拷贝。如果属性是<strong>基本类型，拷贝的就是基本类型的值</strong>；如果属性是内存地址（<strong>引用类型</strong>），拷贝的就是内存地址 ，因此如果其中一个对象<strong>改变了这个地址，就会影响到另一个对象</strong>。即<strong>默认拷贝构造函数只是对对象进行浅拷贝</strong>复制(逐个成员依次拷贝)，即只复制对象空间而不复制资源。</p><h3 id="3-2-深拷贝"><a href="#3-2-深拷贝" class="headerlink" title="3.2 深拷贝"></a>3.2 深拷贝</h3><p>深拷贝，在拷贝引用类型成员变量时，为引用类型的数据成员另辟了一个独立的内存空间，实现真正内容上的拷贝。<strong>基础数据类型或者引用类型，对其中一个对象修改该值，不会影响另外一个</strong>。每个对象都需要实现 <code>Cloneable</code> 并重写 <code>clone()</code> 方法，进而实现了对象的串行层层拷贝。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> Java </category>
-          
-          <category> 基础 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 深浅拷贝 </tag>
             
         </tags>
       
@@ -752,35 +752,6 @@
     
     
     <entry>
-      <title>Session与Cookie</title>
-      <link href="/2020/05/08/%E7%BD%91%E7%BB%9C/Session%E4%B8%8ECookie/"/>
-      <url>/2020/05/08/%E7%BD%91%E7%BB%9C/Session%E4%B8%8ECookie/</url>
-      
-        <content type="html"><![CDATA[<blockquote><p><a href="hofe.work">欢迎来我的个人网站</a>，里面有最新的版本</p><p>这篇介绍了下Session 和 Cookie面试题常考内容，并做了延伸，解释了原理。没有太过详细，之后会补充。</p></blockquote><h2 id="Cookie与Session"><a href="#Cookie与Session" class="headerlink" title="Cookie与Session"></a>Cookie与Session</h2><h3 id="一、Cookie"><a href="#一、Cookie" class="headerlink" title="一、Cookie"></a>一、Cookie</h3><p>HTTP协议是无状态的协议。<strong>一旦数据交换完毕，客户端与服务器端的连接就会关闭，再次交换数据需要建立新的连接，这就意味着服务器无法从连接上跟踪会话</strong>。</p><p>Cookie通过在<strong>客户端记录信息</strong>确定用户身份，在客户端发起请求的时候，携带上cookie，服务器通过该cookie辨认用户信息。以此来弥补HTTP协议无状态的不足。</p><h4 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h4><p>Cookie是一小段的文本信息。客户端请求服务器，如果服务器需要记录该用户状态，就使用<strong>response向客户端浏览器颁发一个Cookie</strong>。客户端浏览器会把Cookie保存起来。当浏览器再请求该网站时，<strong>浏览器把请求的网址连同该Cookie一同提交给服务器。服务器检查该Cookie，以此来辨认用户状态</strong>。</p><h3 id="二、Session"><a href="#二、Session" class="headerlink" title="二、Session"></a>二、Session</h3><p>Session是<strong>服务器端使用的一种记录客户端状态的机制</strong>，使用上比Cookie简单一些，相应的也增加了服务器的存储压力。</p><h4 id="实现原理-1"><a href="#实现原理-1" class="headerlink" title="实现原理"></a>实现原理</h4><p>客户端浏览器访问服务器的时候，服务器把客户端信息以某种形式记录在服务器上。这就是Session。客户端<strong>浏览器再次访问时只需要从该Session中查找该客户的状态</strong>就可以了。</p><p>保存Sessionid的方式可以采用Cookie，如果禁用了Cookie，可以使用URL重写机制（把会话ID保存在URL中）。</p><h2 id="三、核心概念"><a href="#三、核心概念" class="headerlink" title="三、核心概念"></a>三、核心概念</h2><h3 id="Session和Cookie的区别？"><a href="#Session和Cookie的区别？" class="headerlink" title="Session和Cookie的区别？"></a>Session和Cookie的区别？</h3><ol><li><p>数据存储位置：cookie数据存放在客户的浏览器上，客户端请求服务器时会将Cookie一起提交；session数据放在服务器上，通过检索Sessionid查看状态。</p></li><li><p>安全性：cookie不是很安全，别人可以<strong>分析存放在本地的cookie并进行cookie欺骗</strong>，考虑到安全应当使用session。</p></li><li><p>服务器性能：session会在一定时间内保存在服务器上。当访问增多，会比较占用你服务器的性能，考虑到减轻服务器性能方面，应当使用cookie。</p></li><li><p>数据大小：单个cookie保存的数据不能超过4K，很多浏览器都限制一个站点最多保存20个cookie。</p></li><li><p>信息重要程度：可以考虑将登陆信息等重要信息存放为session，其他信息如果需要保留，可以放在cookie中。</p></li></ol><h3 id="Cookie、session和token的区别"><a href="#Cookie、session和token的区别" class="headerlink" title="Cookie、session和token的区别"></a>Cookie、session和token的区别</h3><p><strong>Cookie的原理</strong></p><p>（1）客户端第一次请求时，发送数据到服务器。</p><p>（2）服务器返回响应信息的同时，还会传回一个cookie（cookie S-001）</p><p>（3）客户端接收服务器的响应之后，浏览器会将cookie存放在一个统一的位置。</p><p>（4）客户端再次向服务器发送请求的时候，会把Cookie S-001再次发挥服务器。</p><p><strong>Token的原理</strong></p><p>（1）客户端第一次请求时，发送用户信息到服务器。服务器对用户信息使用HSA256算法及密钥进行签名，再将这个签名和数据一起作为token返回给客户户端。</p><p>（2）服务端不再保存token，客户端保存token。</p><p>（3）当客户端再次发送请求时，在请求信息中将token一起发送给服务器。</p><p>（4）服务器用同样的HSA256算法和密钥，对数据再计算一次签名，和token的签名做比较</p><p>（5）如果相同，服务器就知道客户端登录过，则反之。</p><p><strong>session的原理</strong></p><p>（1）服务器在处理客户端请求过程中会创建session，并且为该session生存唯一的session ID。（这个session ID在随后的请求中会被用来重新获得已经创建的session。在session被创建后，就可以调用session相关的方法向session中新增内容，这些内容只会保存在服务器中） </p><p>（2）服务器将session ID发送到客户端</p><p>（3）当客户端再次请求时，就会带上这个session ID</p><p>（4）服务器接收到请求之后就会一句Session ID 找到相应的Session ，完成请求</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 网络 </category>
-          
-          <category> HTTP </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Session </tag>
-            
-            <tag> Cookie </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>TCP与UDP详解</title>
       <link href="/2020/05/08/%E7%BD%91%E7%BB%9C/TCP%E4%B8%8EUDP/"/>
       <url>/2020/05/08/%E7%BD%91%E7%BB%9C/TCP%E4%B8%8EUDP/</url>
@@ -802,6 +773,35 @@
             <tag> TCP </tag>
             
             <tag> UDP </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Session与Cookie</title>
+      <link href="/2020/05/08/%E7%BD%91%E7%BB%9C/Session%E4%B8%8ECookie/"/>
+      <url>/2020/05/08/%E7%BD%91%E7%BB%9C/Session%E4%B8%8ECookie/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p><a href="hofe.work">欢迎来我的个人网站</a>，里面有最新的版本</p><p>这篇介绍了下Session 和 Cookie面试题常考内容，并做了延伸，解释了原理。没有太过详细，之后会补充。</p></blockquote><h2 id="Cookie与Session"><a href="#Cookie与Session" class="headerlink" title="Cookie与Session"></a>Cookie与Session</h2><h3 id="一、Cookie"><a href="#一、Cookie" class="headerlink" title="一、Cookie"></a>一、Cookie</h3><p>HTTP协议是无状态的协议。<strong>一旦数据交换完毕，客户端与服务器端的连接就会关闭，再次交换数据需要建立新的连接，这就意味着服务器无法从连接上跟踪会话</strong>。</p><p>Cookie通过在<strong>客户端记录信息</strong>确定用户身份，在客户端发起请求的时候，携带上cookie，服务器通过该cookie辨认用户信息。以此来弥补HTTP协议无状态的不足。</p><h4 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h4><p>Cookie是一小段的文本信息。客户端请求服务器，如果服务器需要记录该用户状态，就使用<strong>response向客户端浏览器颁发一个Cookie</strong>。客户端浏览器会把Cookie保存起来。当浏览器再请求该网站时，<strong>浏览器把请求的网址连同该Cookie一同提交给服务器。服务器检查该Cookie，以此来辨认用户状态</strong>。</p><h3 id="二、Session"><a href="#二、Session" class="headerlink" title="二、Session"></a>二、Session</h3><p>Session是<strong>服务器端使用的一种记录客户端状态的机制</strong>，使用上比Cookie简单一些，相应的也增加了服务器的存储压力。</p><h4 id="实现原理-1"><a href="#实现原理-1" class="headerlink" title="实现原理"></a>实现原理</h4><p>客户端浏览器访问服务器的时候，服务器把客户端信息以某种形式记录在服务器上。这就是Session。客户端<strong>浏览器再次访问时只需要从该Session中查找该客户的状态</strong>就可以了。</p><p>保存Sessionid的方式可以采用Cookie，如果禁用了Cookie，可以使用URL重写机制（把会话ID保存在URL中）。</p><h2 id="三、核心概念"><a href="#三、核心概念" class="headerlink" title="三、核心概念"></a>三、核心概念</h2><h3 id="Session和Cookie的区别？"><a href="#Session和Cookie的区别？" class="headerlink" title="Session和Cookie的区别？"></a>Session和Cookie的区别？</h3><ol><li><p>数据存储位置：cookie数据存放在客户的浏览器上，客户端请求服务器时会将Cookie一起提交；session数据放在服务器上，通过检索Sessionid查看状态。</p></li><li><p>安全性：cookie不是很安全，别人可以<strong>分析存放在本地的cookie并进行cookie欺骗</strong>，考虑到安全应当使用session。</p></li><li><p>服务器性能：session会在一定时间内保存在服务器上。当访问增多，会比较占用你服务器的性能，考虑到减轻服务器性能方面，应当使用cookie。</p></li><li><p>数据大小：单个cookie保存的数据不能超过4K，很多浏览器都限制一个站点最多保存20个cookie。</p></li><li><p>信息重要程度：可以考虑将登陆信息等重要信息存放为session，其他信息如果需要保留，可以放在cookie中。</p></li></ol><h3 id="Cookie、session和token的区别"><a href="#Cookie、session和token的区别" class="headerlink" title="Cookie、session和token的区别"></a>Cookie、session和token的区别</h3><p><strong>Cookie的原理</strong></p><p>（1）客户端第一次请求时，发送数据到服务器。</p><p>（2）服务器返回响应信息的同时，还会传回一个cookie（cookie S-001）</p><p>（3）客户端接收服务器的响应之后，浏览器会将cookie存放在一个统一的位置。</p><p>（4）客户端再次向服务器发送请求的时候，会把Cookie S-001再次发挥服务器。</p><p><strong>Token的原理</strong></p><p>（1）客户端第一次请求时，发送用户信息到服务器。服务器对用户信息使用HSA256算法及密钥进行签名，再将这个签名和数据一起作为token返回给客户户端。</p><p>（2）服务端不再保存token，客户端保存token。</p><p>（3）当客户端再次发送请求时，在请求信息中将token一起发送给服务器。</p><p>（4）服务器用同样的HSA256算法和密钥，对数据再计算一次签名，和token的签名做比较</p><p>（5）如果相同，服务器就知道客户端登录过，则反之。</p><p><strong>session的原理</strong></p><p>（1）服务器在处理客户端请求过程中会创建session，并且为该session生存唯一的session ID。（这个session ID在随后的请求中会被用来重新获得已经创建的session。在session被创建后，就可以调用session相关的方法向session中新增内容，这些内容只会保存在服务器中） </p><p>（2）服务器将session ID发送到客户端</p><p>（3）当客户端再次请求时，就会带上这个session ID</p><p>（4）服务器接收到请求之后就会一句Session ID 找到相应的Session ，完成请求</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 网络 </category>
+          
+          <category> HTTP </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Session </tag>
+            
+            <tag> Cookie </tag>
             
         </tags>
       
@@ -920,6 +920,31 @@
     
     
     <entry>
+      <title>贪心算法题目总结</title>
+      <link href="/2020/05/04/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/"/>
+      <url>/2020/05/04/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/</url>
+      
+        <content type="html"><![CDATA[<p>1、买卖股票最大收益</p><blockquote><p>给定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。</p><p>如果你最多只允许完成一笔交易（即买入和卖出一支股票一次），设计一个算法来计算你所能获取的最大利润。</p><p>注意：你不能在买入股票前卖出股票。</p><p>示例：</p><blockquote><p>输入: [7,1,5,3,6,4]<br>输出: 5<br>解释: 在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。<br>     注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格；同时，你不能在买入前卖出股票。</p></blockquote><p>来源：力扣（LeetCode）<br>链接：<a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock" target="_blank" rel="noopener">https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock</a></p></blockquote><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="comment">//只要记录前面的最小价格，将这个最小价格作为买入价格，然后将当前的价格作为售出价格，查看当前收益是不是最大收益。</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="keyword">int</span>[] prices)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(prices.length == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> min = prices[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">int</span> max = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; prices.length; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(prices[i] &lt; min)&#123;</span><br><span class="line">                min = prices[i];</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                max = Math.max(max, prices[i] - min);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> max;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>2、买卖股票最大收益（可多次买卖）</p><p><a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/description/" target="_blank" rel="noopener">Leetcode</a> / <a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/description/" target="_blank" rel="noopener">力扣</a></p><p>题目描述：可以进行多次交易，多次交易之间不能交叉进行，可以进行多次交易。</p><p>贪心：对于 [a, b, c, d]，如果有 a &lt;= b &lt;= c &lt;= d ，那么最大收益为 d - a。而 d - a = (d - c) + (c - b) + (b - a) ，因此当访问到一个 prices[i] 且 prices[i] - prices[i-1] &gt; 0，那么就把 prices[i] - prices[i-1] 添加到收益中。</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="keyword">int</span>[] prices)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(prices.length == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> profit = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; prices.length; i++)&#123;</span><br><span class="line">            profit += Math.max(prices[i] - prices[i-<span class="number">1</span>],<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> profit;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>动态规划：第<code>i</code>天只有两种状态，不持有或持有股票，当天不持有股票的状态可能来自昨天卖出或者昨天也不持有，同理，当天持有股票的状态可能来自昨天买入或者昨天也持有中，取最后一天的不持有股票状态就是问题的解</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="keyword">int</span>[] prices)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(prices.length == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> dp[][] = <span class="keyword">new</span> <span class="keyword">int</span>[prices.length][<span class="number">2</span>];</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">1</span>] = -prices[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; prices.length; i++)&#123;</span><br><span class="line">            dp[i][<span class="number">0</span>] = Math.max(dp[i-<span class="number">1</span>][<span class="number">0</span>], dp[i-<span class="number">1</span>][<span class="number">1</span>]+prices[i]);</span><br><span class="line">            dp[i][<span class="number">1</span>] = Math.max(dp[i-<span class="number">1</span>][<span class="number">1</span>], dp[i-<span class="number">1</span>][<span class="number">0</span>]-prices[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[prices.length - <span class="number">1</span>][<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>3、最大连续子数组求和</p><p><a href="https://leetcode.com/problems/maximum-subarray/description/" target="_blank" rel="noopener">Leetcode</a> / <a href="https://leetcode-cn.com/problems/maximum-subarray/description/" target="_blank" rel="noopener">力扣</a></p><p>给定一个整数数组 <code>nums</code> ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxSubArray</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> presum[] = <span class="keyword">new</span> <span class="keyword">int</span>[nums.length];</span><br><span class="line">        presum[<span class="number">0</span>] = nums[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">int</span> max = presum[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; nums.length; i++)&#123;</span><br><span class="line">            presum[i] = presum[i-<span class="number">1</span>] &gt; <span class="number">0</span> ? presum[i-<span class="number">1</span>]+nums[i] : nums[i];</span><br><span class="line">            max = Math.max(presum[i], max);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> max;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 可以用presum代替presum进行优化，这样好理解写</span></span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据结构与算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 贪心 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>栈、队列题目总结</title>
       <link href="/2020/05/04/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%A0%88%E3%80%81%E9%98%9F%E5%88%97%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/"/>
       <url>/2020/05/04/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%A0%88%E3%80%81%E9%98%9F%E5%88%97%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/</url>
@@ -939,31 +964,6 @@
             <tag> 栈 </tag>
             
             <tag> 队列 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>贪心算法题目总结</title>
-      <link href="/2020/05/04/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/"/>
-      <url>/2020/05/04/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/</url>
-      
-        <content type="html"><![CDATA[<p>1、买卖股票最大收益</p><blockquote><p>给定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。</p><p>如果你最多只允许完成一笔交易（即买入和卖出一支股票一次），设计一个算法来计算你所能获取的最大利润。</p><p>注意：你不能在买入股票前卖出股票。</p><p>示例：</p><blockquote><p>输入: [7,1,5,3,6,4]<br>输出: 5<br>解释: 在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。<br>     注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格；同时，你不能在买入前卖出股票。</p></blockquote><p>来源：力扣（LeetCode）<br>链接：<a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock" target="_blank" rel="noopener">https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock</a></p></blockquote><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="comment">//只要记录前面的最小价格，将这个最小价格作为买入价格，然后将当前的价格作为售出价格，查看当前收益是不是最大收益。</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="keyword">int</span>[] prices)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(prices.length == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> min = prices[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">int</span> max = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; prices.length; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(prices[i] &lt; min)&#123;</span><br><span class="line">                min = prices[i];</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                max = Math.max(max, prices[i] - min);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> max;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>2、买卖股票最大收益（可多次买卖）</p><p><a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/description/" target="_blank" rel="noopener">Leetcode</a> / <a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/description/" target="_blank" rel="noopener">力扣</a></p><p>题目描述：可以进行多次交易，多次交易之间不能交叉进行，可以进行多次交易。</p><p>贪心：对于 [a, b, c, d]，如果有 a &lt;= b &lt;= c &lt;= d ，那么最大收益为 d - a。而 d - a = (d - c) + (c - b) + (b - a) ，因此当访问到一个 prices[i] 且 prices[i] - prices[i-1] &gt; 0，那么就把 prices[i] - prices[i-1] 添加到收益中。</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="keyword">int</span>[] prices)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(prices.length == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> profit = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; prices.length; i++)&#123;</span><br><span class="line">            profit += Math.max(prices[i] - prices[i-<span class="number">1</span>],<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> profit;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>动态规划：第<code>i</code>天只有两种状态，不持有或持有股票，当天不持有股票的状态可能来自昨天卖出或者昨天也不持有，同理，当天持有股票的状态可能来自昨天买入或者昨天也持有中，取最后一天的不持有股票状态就是问题的解</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="keyword">int</span>[] prices)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(prices.length == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> dp[][] = <span class="keyword">new</span> <span class="keyword">int</span>[prices.length][<span class="number">2</span>];</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">1</span>] = -prices[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; prices.length; i++)&#123;</span><br><span class="line">            dp[i][<span class="number">0</span>] = Math.max(dp[i-<span class="number">1</span>][<span class="number">0</span>], dp[i-<span class="number">1</span>][<span class="number">1</span>]+prices[i]);</span><br><span class="line">            dp[i][<span class="number">1</span>] = Math.max(dp[i-<span class="number">1</span>][<span class="number">1</span>], dp[i-<span class="number">1</span>][<span class="number">0</span>]-prices[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[prices.length - <span class="number">1</span>][<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>3、最大连续子数组求和</p><p><a href="https://leetcode.com/problems/maximum-subarray/description/" target="_blank" rel="noopener">Leetcode</a> / <a href="https://leetcode-cn.com/problems/maximum-subarray/description/" target="_blank" rel="noopener">力扣</a></p><p>给定一个整数数组 <code>nums</code> ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxSubArray</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> presum[] = <span class="keyword">new</span> <span class="keyword">int</span>[nums.length];</span><br><span class="line">        presum[<span class="number">0</span>] = nums[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">int</span> max = presum[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; nums.length; i++)&#123;</span><br><span class="line">            presum[i] = presum[i-<span class="number">1</span>] &gt; <span class="number">0</span> ? presum[i-<span class="number">1</span>]+nums[i] : nums[i];</span><br><span class="line">            max = Math.max(presum[i], max);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> max;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 可以用presum代替presum进行优化，这样好理解写</span></span><br></pre></td></tr></table></figure>]]></content>
-      
-      
-      <categories>
-          
-          <category> 数据结构与算法 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 贪心 </tag>
             
         </tags>
       

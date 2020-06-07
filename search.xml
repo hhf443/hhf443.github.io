@@ -249,33 +249,6 @@
     
     
     <entry>
-      <title>Spring核心概念</title>
-      <link href="/2020/05/22/Java/Spring%E9%9D%A2%E8%AF%95%E9%A2%98%E9%94%A6%E9%9B%86/"/>
-      <url>/2020/05/22/Java/Spring%E9%9D%A2%E8%AF%95%E9%A2%98%E9%94%A6%E9%9B%86/</url>
-      
-        <content type="html"><![CDATA[<blockquote><p>面试题锦集系列专注于面试题，为的只是回答面试题的时候能组织好语言，所以说明的不会很详细，不过建议需要了解原理，只背面试题可不行。如果需要更详细的内容，可以看我的其他博客</p></blockquote><h2 id="说说Spring的三大核心思想"><a href="#说说Spring的三大核心思想" class="headerlink" title="说说Spring的三大核心思想"></a>说说Spring的三大核心思想</h2><p>IOC ：控制反转，将对象的创建权交给Spring管理</p><p>DI ： 依赖注入，将对象的属性赋值，对象依赖关系维护交给Spring</p><p>AOP ：面向切面编程，将重复代码与业务逻辑分离</p><h3 id="IOC与DI"><a href="#IOC与DI" class="headerlink" title="IOC与DI"></a>IOC与DI</h3><p>Spring的核心思想之一：<strong>Inversion of Control , 控制反转 IOC</strong></p><p><strong>对象的创建交给外部容器完成，这个就做控制反转</strong>，可以解决手动创建对象以及对象依赖问题。</p><p>对象间的依赖关系采用<strong>依赖注入：dependency injection.</strong>来解决</p><p>好处：</p><p><strong>第一，资源集中管理，实现资源的可配置和易管理</strong>。<strong>第二，降低了耦合度</strong>。</p><h2 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h2><p><strong>Aop： aspect object programming  面向切面编程</strong>，将那些与业务无关，<strong>却为业务模块所共同调用的逻辑或责任（例如事务处理、日志管理、权限控制等）封装起来</strong>，便于<strong>减少系统的重复代码</strong>，<strong>降低模块间的耦合度</strong>，并<strong>有利于未来的可拓展性和可维护性</strong>。</p><p>简单来讲就是将重复代码与业务逻辑分离</p><p>面向切面编程：<strong>对很多功能都有的重复的代码抽取，再在运行的时候往业务方法上动态植入“切面类代码”</strong></p><h3 id="Spring-AOP-和-AspectJ-AOP-有什么区别？"><a href="#Spring-AOP-和-AspectJ-AOP-有什么区别？" class="headerlink" title="Spring AOP 和 AspectJ AOP 有什么区别？"></a>Spring AOP 和 AspectJ AOP 有什么区别？</h3><p><strong>Spring AOP 属于运行时增强，而 AspectJ 是编译时增强。</strong> Spring AOP 基于代理(Proxying)，而 AspectJ 基于字节码操作(Bytecode Manipulation)。</p><p>Spring AOP 已经集成了 AspectJ 。AspectJ 相比于 Spring AOP 功能更加强大，但是 Spring AOP 相对来说更简单，</p><p>如果我们的切面比较少，那么两者性能差异不大。但是，当切面太多的话，最好选择 AspectJ ，它比Spring AOP 快很多。</p><h3 id="Spring-中的-bean-的作用域有哪些"><a href="#Spring-中的-bean-的作用域有哪些" class="headerlink" title="Spring 中的 bean 的作用域有哪些?"></a>Spring 中的 bean 的作用域有哪些?</h3><ul><li>singleton : 唯一 bean 实例，Spring 中的 bean 默认都是单例的。</li><li>prototype : 每次请求都会创建一个新的 bean 实例。</li><li>request : 每一次HTTP请求都会产生一个新的bean，该bean仅在当前HTTP request内有效。</li><li>session : 每一次HTTP请求都会产生一个新的 bean，该bean仅在当前 HTTP session 内有效。</li><li>global-session：全局session作用域，仅仅在基于portlet的web应用中才有意义，Spring5已经没有了。</li></ul><h3 id="Spring-中的单例-bean-的线程安全问题了解吗？"><a href="#Spring-中的单例-bean-的线程安全问题了解吗？" class="headerlink" title="Spring 中的单例 bean 的线程安全问题了解吗？"></a>Spring 中的单例 bean 的线程安全问题了解吗？</h3><p>单例 bean 存在线程问题，主要是因为当多个线程操作同一个对象的时候，对这个对象的<strong>非静态成员变量</strong>的写操作会存在线程安全问题。</p><p>常见的有两种解决办法：</p><ol><li>在Bean对象中尽量避免定义可变的成员变量（不太现实）。</li><li>在类中<strong>定义一个ThreadLocal成员变量，将需要的可变成员变量保存在 ThreadLocal</strong> 中（推荐的一种方式）。</li></ol><h2 id="SpringMVC流程"><a href="#SpringMVC流程" class="headerlink" title="SpringMVC流程"></a>SpringMVC流程</h2><p><img src="/" class="lazyload" data-src="https://gitee.com/hofe/graph/raw/master/img/20200522150426.png"  alt=""></p><p>纠正： <code>DispatcherServlet</code> 的作用是接收请求，响应结果。</p><p><strong>流程说明（重要）：</strong></p><ol><li>客户端（浏览器）发送请求，直接请求到 <code>DispatcherServlet</code>。</li><li><code>DispatcherServlet</code> 根据请求信息调用 <code>HandlerMapping</code>，解析请求对应的 <code>Handler</code>。</li><li>解析到对应的 <code>Handler</code>（也就是我们平常说的 <code>Controller</code> 控制器）后，开始由 <code>HandlerAdapter</code> 适配器处理。</li><li><code>HandlerAdapter</code> 会根据 <code>Handler</code>来调用真正的处理器开处理请求，并处理相应的业务逻辑。</li><li>处理器处理完业务后，会返回一个 <code>ModelAndView</code> 对象，<code>Model</code> 是返回的数据对象，<code>View</code> 是个逻辑上的 <code>View</code>。</li><li><code>ViewResolver</code> 会根据逻辑 <code>View</code> 查找实际的 <code>View</code>。</li><li><code>DispaterServlet</code> 把返回的 <code>Model</code> 传给 <code>View</code>（视图渲染）。</li><li>把 <code>View</code> 返回给请求者（浏览器）</li></ol><h2 id="Spring-框架中用到了哪些设计模式？"><a href="#Spring-框架中用到了哪些设计模式？" class="headerlink" title="Spring 框架中用到了哪些设计模式？"></a>Spring 框架中用到了哪些设计模式？</h2><ul><li><strong>工厂设计模式</strong> : Spring使用工厂模式通过 <code>BeanFactory</code>、<code>ApplicationContext</code> 创建 bean 对象。</li><li><strong>代理设计模式</strong> : Spring AOP 功能的实现。</li><li><strong>单例设计模式</strong> : Spring 中的 Bean 默认都是单例的。</li><li><strong>模板方法模式</strong> : Spring 中 <code>jdbcTemplate</code>、<code>hibernateTemplate</code> 等以 Template 结尾的对数据库操作的类，它们就使用到了模板模式。</li><li><strong>包装器设计模式</strong> : 我们的项目需要连接多个数据库，而且不同的客户在每次访问中根据需要会去访问不同的数据库。这种模式让我们可以根据客户的需求能够动态切换不同的数据源。</li><li><strong>观察者模式:</strong> Spring 事件驱动模型就是观察者模式很经典的一个应用。</li><li><strong>适配器模式</strong> :Spring AOP 的增强或通知(Advice)使用到了适配器模式、spring MVC 中也是用到了适配器模式适配<code>Controller</code>。</li></ul><h2 id="Spring-管理事务的方式有几种？"><a href="#Spring-管理事务的方式有几种？" class="headerlink" title="Spring 管理事务的方式有几种？"></a>Spring 管理事务的方式有几种？</h2><ol><li>编程式事务，在代码中硬编码。(不推荐使用)</li><li>声明式事务，在配置文件中配置（推荐使用）<ol><li>基于XML的声明式事务</li><li>基于注解的声明式事务</li></ol></li></ol><h2 id="Spring如何控制事务"><a href="#Spring如何控制事务" class="headerlink" title="Spring如何控制事务"></a>Spring如何控制事务</h2><h3 id="循环依赖、三级缓存"><a href="#循环依赖、三级缓存" class="headerlink" title="循环依赖、三级缓存"></a>循环依赖、三级缓存</h3>]]></content>
-      
-      
-      <categories>
-          
-          <category> Java </category>
-          
-          <category> Spring </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Spring </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>SpringBoot核心概念</title>
       <link href="/2020/05/22/Java/SpringBoot%E9%9D%A2%E8%AF%95%E9%A2%98%E9%94%A6%E9%9B%86/"/>
       <url>/2020/05/22/Java/SpringBoot%E9%9D%A2%E8%AF%95%E9%A2%98%E9%94%A6%E9%9B%86/</url>
@@ -295,6 +268,33 @@
         <tags>
             
             <tag> SpringBoot </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Spring核心概念</title>
+      <link href="/2020/05/22/Java/Spring%E9%9D%A2%E8%AF%95%E9%A2%98%E9%94%A6%E9%9B%86/"/>
+      <url>/2020/05/22/Java/Spring%E9%9D%A2%E8%AF%95%E9%A2%98%E9%94%A6%E9%9B%86/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>面试题锦集系列专注于面试题，为的只是回答面试题的时候能组织好语言，所以说明的不会很详细，不过建议需要了解原理，只背面试题可不行。如果需要更详细的内容，可以看我的其他博客</p></blockquote><h2 id="说说Spring的三大核心思想"><a href="#说说Spring的三大核心思想" class="headerlink" title="说说Spring的三大核心思想"></a>说说Spring的三大核心思想</h2><p>IOC ：控制反转，将对象的创建权交给Spring管理</p><p>DI ： 依赖注入，将对象的属性赋值，对象依赖关系维护交给Spring</p><p>AOP ：面向切面编程，将重复代码与业务逻辑分离</p><h3 id="IOC与DI"><a href="#IOC与DI" class="headerlink" title="IOC与DI"></a>IOC与DI</h3><p>Spring的核心思想之一：<strong>Inversion of Control , 控制反转 IOC</strong></p><p><strong>对象的创建交给外部容器完成，这个就做控制反转</strong>，可以解决手动创建对象以及对象依赖问题。</p><p>对象间的依赖关系采用<strong>依赖注入：dependency injection.</strong>来解决</p><p>好处：</p><p><strong>第一，资源集中管理，实现资源的可配置和易管理</strong>。<strong>第二，降低了耦合度</strong>。</p><h2 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h2><p><strong>Aop： aspect object programming  面向切面编程</strong>，将那些与业务无关，<strong>却为业务模块所共同调用的逻辑或责任（例如事务处理、日志管理、权限控制等）封装起来</strong>，便于<strong>减少系统的重复代码</strong>，<strong>降低模块间的耦合度</strong>，并<strong>有利于未来的可拓展性和可维护性</strong>。</p><p>简单来讲就是将重复代码与业务逻辑分离</p><p>面向切面编程：<strong>对很多功能都有的重复的代码抽取，再在运行的时候往业务方法上动态植入“切面类代码”</strong></p><h3 id="Spring-AOP-和-AspectJ-AOP-有什么区别？"><a href="#Spring-AOP-和-AspectJ-AOP-有什么区别？" class="headerlink" title="Spring AOP 和 AspectJ AOP 有什么区别？"></a>Spring AOP 和 AspectJ AOP 有什么区别？</h3><p><strong>Spring AOP 属于运行时增强，而 AspectJ 是编译时增强。</strong> Spring AOP 基于代理(Proxying)，而 AspectJ 基于字节码操作(Bytecode Manipulation)。</p><p>Spring AOP 已经集成了 AspectJ 。AspectJ 相比于 Spring AOP 功能更加强大，但是 Spring AOP 相对来说更简单，</p><p>如果我们的切面比较少，那么两者性能差异不大。但是，当切面太多的话，最好选择 AspectJ ，它比Spring AOP 快很多。</p><h3 id="Spring-中的-bean-的作用域有哪些"><a href="#Spring-中的-bean-的作用域有哪些" class="headerlink" title="Spring 中的 bean 的作用域有哪些?"></a>Spring 中的 bean 的作用域有哪些?</h3><ul><li>singleton : 唯一 bean 实例，Spring 中的 bean 默认都是单例的。</li><li>prototype : 每次请求都会创建一个新的 bean 实例。</li><li>request : 每一次HTTP请求都会产生一个新的bean，该bean仅在当前HTTP request内有效。</li><li>session : 每一次HTTP请求都会产生一个新的 bean，该bean仅在当前 HTTP session 内有效。</li><li>global-session：全局session作用域，仅仅在基于portlet的web应用中才有意义，Spring5已经没有了。</li></ul><h3 id="Spring-中的单例-bean-的线程安全问题了解吗？"><a href="#Spring-中的单例-bean-的线程安全问题了解吗？" class="headerlink" title="Spring 中的单例 bean 的线程安全问题了解吗？"></a>Spring 中的单例 bean 的线程安全问题了解吗？</h3><p>单例 bean 存在线程问题，主要是因为当多个线程操作同一个对象的时候，对这个对象的<strong>非静态成员变量</strong>的写操作会存在线程安全问题。</p><p>常见的有两种解决办法：</p><ol><li>在Bean对象中尽量避免定义可变的成员变量（不太现实）。</li><li>在类中<strong>定义一个ThreadLocal成员变量，将需要的可变成员变量保存在 ThreadLocal</strong> 中（推荐的一种方式）。</li></ol><h2 id="SpringMVC流程"><a href="#SpringMVC流程" class="headerlink" title="SpringMVC流程"></a>SpringMVC流程</h2><p><img src="/" class="lazyload" data-src="https://gitee.com/hofe/graph/raw/master/img/20200522150426.png"  alt=""></p><p>纠正： <code>DispatcherServlet</code> 的作用是接收请求，响应结果。</p><p><strong>流程说明（重要）：</strong></p><ol><li>客户端（浏览器）发送请求，直接请求到 <code>DispatcherServlet</code>。</li><li><code>DispatcherServlet</code> 根据请求信息调用 <code>HandlerMapping</code>，解析请求对应的 <code>Handler</code>。</li><li>解析到对应的 <code>Handler</code>（也就是我们平常说的 <code>Controller</code> 控制器）后，开始由 <code>HandlerAdapter</code> 适配器处理。</li><li><code>HandlerAdapter</code> 会根据 <code>Handler</code>来调用真正的处理器开处理请求，并处理相应的业务逻辑。</li><li>处理器处理完业务后，会返回一个 <code>ModelAndView</code> 对象，<code>Model</code> 是返回的数据对象，<code>View</code> 是个逻辑上的 <code>View</code>。</li><li><code>ViewResolver</code> 会根据逻辑 <code>View</code> 查找实际的 <code>View</code>。</li><li><code>DispaterServlet</code> 把返回的 <code>Model</code> 传给 <code>View</code>（视图渲染）。</li><li>把 <code>View</code> 返回给请求者（浏览器）</li></ol><h2 id="Spring-框架中用到了哪些设计模式？"><a href="#Spring-框架中用到了哪些设计模式？" class="headerlink" title="Spring 框架中用到了哪些设计模式？"></a>Spring 框架中用到了哪些设计模式？</h2><ul><li><strong>工厂设计模式</strong> : Spring使用工厂模式通过 <code>BeanFactory</code>、<code>ApplicationContext</code> 创建 bean 对象。</li><li><strong>代理设计模式</strong> : Spring AOP 功能的实现。</li><li><strong>单例设计模式</strong> : Spring 中的 Bean 默认都是单例的。</li><li><strong>模板方法模式</strong> : Spring 中 <code>jdbcTemplate</code>、<code>hibernateTemplate</code> 等以 Template 结尾的对数据库操作的类，它们就使用到了模板模式。</li><li><strong>包装器设计模式</strong> : 我们的项目需要连接多个数据库，而且不同的客户在每次访问中根据需要会去访问不同的数据库。这种模式让我们可以根据客户的需求能够动态切换不同的数据源。</li><li><strong>观察者模式:</strong> Spring 事件驱动模型就是观察者模式很经典的一个应用。</li><li><strong>适配器模式</strong> :Spring AOP 的增强或通知(Advice)使用到了适配器模式、spring MVC 中也是用到了适配器模式适配<code>Controller</code>。</li></ul><h2 id="Spring-管理事务的方式有几种？"><a href="#Spring-管理事务的方式有几种？" class="headerlink" title="Spring 管理事务的方式有几种？"></a>Spring 管理事务的方式有几种？</h2><ol><li>编程式事务，在代码中硬编码。(不推荐使用)</li><li>声明式事务，在配置文件中配置（推荐使用）<ol><li>基于XML的声明式事务</li><li>基于注解的声明式事务</li></ol></li></ol><h2 id="Spring如何控制事务"><a href="#Spring如何控制事务" class="headerlink" title="Spring如何控制事务"></a>Spring如何控制事务</h2><h3 id="循环依赖、三级缓存"><a href="#循环依赖、三级缓存" class="headerlink" title="循环依赖、三级缓存"></a>循环依赖、三级缓存</h3>]]></content>
+      
+      
+      <categories>
+          
+          <category> Java </category>
+          
+          <category> Spring </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Spring </tag>
             
         </tags>
       
@@ -488,31 +488,6 @@
     
     
     <entry>
-      <title>一文详解快速排序</title>
-      <link href="/2020/05/20/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B8%80%E6%96%87%E8%AF%A6%E8%A7%A3%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/"/>
-      <url>/2020/05/20/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B8%80%E6%96%87%E8%AF%A6%E8%A7%A3%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/</url>
-      
-        <content type="html"><![CDATA[<blockquote><p>面试的时候遇上了，但是很可惜忘记了。快排不难，但是如果没做个详细的记录的话，恐怕下次又要忘了，那真的就是让机会从手上溜走了。</p></blockquote><h2 id="一、快排"><a href="#一、快排" class="headerlink" title="一、快排"></a>一、快排</h2><h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>平均时间复杂度O(nlogn)，最好时间复杂度O(nlogn)，最差时间复杂度O(n^2)；空间复杂度O(nlogn)，不稳定。</p><p>给一串数组，第一遍选取一个参考点，可以随便选择，比如a[0]，接下来遍历数组，要做到左边的都比a[0]小，右边的都比a[0]大。</p><p>从a[0]开始向右遍历，a[length-1]开始向左遍历，遇到违反上述规则的就交换两个位置的数，以满足规则。直到两个指针相遇。还要记得将相遇的点与参考点a[0]交换数。</p><p>之后重复上述过程，相遇点-1作为左边部分的数组尾，相遇点+1作为右边部分的数组头，参考点就还是每部分数组的第一个元素。</p><h3 id="详细过程（参考）"><a href="#详细过程（参考）" class="headerlink" title="详细过程（参考）"></a>详细过程（<a href="https://www.jianshu.com/p/55ab254586bf" target="_blank" rel="noopener">参考</a>）</h3><p>下面通过一个例子介绍快速排序算法的思想，假设要对数组a[10]={6，1，2，7，9，3，4，5，10，8}进行排序，首先要在数组中选择一个数作为基准值，这个数可以随意选择，在这里，我们选择数组的第一个元素a[0]=6作为基准值，接下来，我们需要把数组中小于6的数放在左边，大于6的数放在右边，怎么实现呢？</p><p>我们设置两个“哨兵”，记为“哨兵i”和“哨兵j”，他们分别指向数组的第一个元素和最后一个元素，即i=0，j=8。首先哨兵j开始出动，哨兵j一步一步地向左挪动（即j–-），直到找到一个小于6的数停下来。接下来哨兵i再一步一步向右挪动（即i++），直到找到一个数大于6的数停下来。</p><p><img src="/" class="lazyload" data-src="https:////upload-images.jianshu.io/upload_images/9137038-970adbc928132b9b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/764/format/webp"  alt="img"></p><p>即将开始查询</p><p> 最后哨兵j停在了数字5面前，哨兵i停在了数字7面前。此时就需要交换i和j指向的元素的值。</p><p><img src="/" class="lazyload" data-src="https:////upload-images.jianshu.io/upload_images/9137038-45f851f3ce4e1a61.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/578/format/webp"  alt="img"></p><p>哨兵分别停在5和7上面，并且进行交换</p><p> 交换之后的数组变为a[10]={6，1，2，5，9，3，4，7，10，8}：</p><p><img src="/" class="lazyload" data-src="https:////upload-images.jianshu.io/upload_images/9137038-655ddca94bae92a7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/546/format/webp"  alt="img"></p><p>交换完成</p><p> 第一次交换至此结束。接下来，由于哨兵i和哨兵j还没有相遇，于是哨兵j继续向前，发现比6小的4之后停下；哨兵i继续向前，发现比6大的9之后停下，两者再进行交换。交换之后的数组变为a[10]={6，1，2，5，4，3，9，7，10，8}。</p><p><img src="/" class="lazyload" data-src="https:////upload-images.jianshu.io/upload_images/9137038-e7b6f35cb82e7bbf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/546/format/webp"  alt="img"></p><p>第二次的查询交换</p><p> 第二次交换至此结束。接下来，哨兵j继续向前，发小比6小的3停下来；哨兵i继续向前，发现i==j了！！！于是，这一轮的探测就要结束了，此时交换a[i]与基准的值，数组a就以6为分界线，分成了小于6和大于6的左右两部分：a[10]={3，1，2，5，4，6，9，7，10，8}。</p><p><img src="/" class="lazyload" data-src="https:////upload-images.jianshu.io/upload_images/9137038-9e4e52d1c781a312.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/527/format/webp"  alt="img"></p><p>第一轮查询交换结束</p><p>此后分为{3,1,2,5,4} 6 {9,7,10,8}，递归的左边继续上述步骤、右边继续上述步骤</p><p>以上查询交换过程摘抄自<br><a href="https://links.jianshu.com/go?to=https%3A%2F%2Fblog.csdn.net%2Fsinat_20177327%2Farticle%2Fdetails%2F76560079" target="_blank" rel="noopener">https://blog.csdn.net/sinat_20177327/article/details/76560079</a></p><h2 id="二、快排实现"><a href="#二、快排实现" class="headerlink" title="二、快排实现"></a>二、快排实现</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 快速排序算法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span>[] list, <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (left &lt; right) &#123; <span class="comment">// !!!不是while而是if</span></span><br><span class="line">        <span class="keyword">int</span> point = partition(list, left, right);</span><br><span class="line">        quickSort(list, left, point - <span class="number">1</span>);</span><br><span class="line">        quickSort(list, point + <span class="number">1</span>, right);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">partition</span><span class="params">(<span class="keyword">int</span>[] list, <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 用数组的第一个元素作为基准数</span></span><br><span class="line">    <span class="keyword">int</span> first = list[left];</span><br><span class="line">    <span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">        <span class="keyword">while</span> (left &lt; right &amp;&amp; list[right] &gt;= first) &#123;</span><br><span class="line">            right--;</span><br><span class="line">        &#125;</span><br><span class="line">        list[left] = list[right]; <span class="comment">// swap(list, left, right);</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (left &lt; right &amp;&amp; list[left] &lt;= first) &#123;</span><br><span class="line">            left++;</span><br><span class="line">        &#125;</span><br><span class="line">        list[right] = list[left];</span><br><span class="line">    &#125;</span><br><span class="line">    list[left] = first;<span class="comment">// 如果采用swap，则不需要这句</span></span><br><span class="line">    <span class="comment">// 返回分割点所在的位置</span></span><br><span class="line">    <span class="keyword">return</span> left;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 交换数组中两个位置的元素</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] list, <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp;</span><br><span class="line">    <span class="keyword">if</span> (list != <span class="keyword">null</span> &amp;&amp; list.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        temp = list[left];</span><br><span class="line">        list[left] = list[right];</span><br><span class="line">        list[right] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      
-      
-      <categories>
-          
-          <category> 算法 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 快排 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>跳台阶问题</title>
       <link href="/2020/05/20/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B7%B3%E5%8F%B0%E9%98%B6%E9%97%AE%E9%A2%98/"/>
       <url>/2020/05/20/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B7%B3%E5%8F%B0%E9%98%B6%E9%97%AE%E9%A2%98/</url>
@@ -532,6 +507,31 @@
             <tag> 迭代 </tag>
             
             <tag> 递归 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>一文详解快速排序</title>
+      <link href="/2020/05/20/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B8%80%E6%96%87%E8%AF%A6%E8%A7%A3%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/"/>
+      <url>/2020/05/20/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B8%80%E6%96%87%E8%AF%A6%E8%A7%A3%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>面试的时候遇上了，但是很可惜忘记了。快排不难，但是如果没做个详细的记录的话，恐怕下次又要忘了，那真的就是让机会从手上溜走了。</p></blockquote><h2 id="一、快排"><a href="#一、快排" class="headerlink" title="一、快排"></a>一、快排</h2><h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>平均时间复杂度O(nlogn)，最好时间复杂度O(nlogn)，最差时间复杂度O(n^2)；空间复杂度O(nlogn)，不稳定。</p><p>给一串数组，第一遍选取一个参考点，可以随便选择，比如a[0]，接下来遍历数组，要做到左边的都比a[0]小，右边的都比a[0]大。</p><p>从a[0]开始向右遍历，a[length-1]开始向左遍历，遇到违反上述规则的就交换两个位置的数，以满足规则。直到两个指针相遇。还要记得将相遇的点与参考点a[0]交换数。</p><p>之后重复上述过程，相遇点-1作为左边部分的数组尾，相遇点+1作为右边部分的数组头，参考点就还是每部分数组的第一个元素。</p><h3 id="详细过程（参考）"><a href="#详细过程（参考）" class="headerlink" title="详细过程（参考）"></a>详细过程（<a href="https://www.jianshu.com/p/55ab254586bf" target="_blank" rel="noopener">参考</a>）</h3><p>下面通过一个例子介绍快速排序算法的思想，假设要对数组a[10]={6，1，2，7，9，3，4，5，10，8}进行排序，首先要在数组中选择一个数作为基准值，这个数可以随意选择，在这里，我们选择数组的第一个元素a[0]=6作为基准值，接下来，我们需要把数组中小于6的数放在左边，大于6的数放在右边，怎么实现呢？</p><p>我们设置两个“哨兵”，记为“哨兵i”和“哨兵j”，他们分别指向数组的第一个元素和最后一个元素，即i=0，j=8。首先哨兵j开始出动，哨兵j一步一步地向左挪动（即j–-），直到找到一个小于6的数停下来。接下来哨兵i再一步一步向右挪动（即i++），直到找到一个数大于6的数停下来。</p><p><img src="/" class="lazyload" data-src="https:////upload-images.jianshu.io/upload_images/9137038-970adbc928132b9b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/764/format/webp"  alt="img"></p><p>即将开始查询</p><p> 最后哨兵j停在了数字5面前，哨兵i停在了数字7面前。此时就需要交换i和j指向的元素的值。</p><p><img src="/" class="lazyload" data-src="https:////upload-images.jianshu.io/upload_images/9137038-45f851f3ce4e1a61.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/578/format/webp"  alt="img"></p><p>哨兵分别停在5和7上面，并且进行交换</p><p> 交换之后的数组变为a[10]={6，1，2，5，9，3，4，7，10，8}：</p><p><img src="/" class="lazyload" data-src="https:////upload-images.jianshu.io/upload_images/9137038-655ddca94bae92a7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/546/format/webp"  alt="img"></p><p>交换完成</p><p> 第一次交换至此结束。接下来，由于哨兵i和哨兵j还没有相遇，于是哨兵j继续向前，发现比6小的4之后停下；哨兵i继续向前，发现比6大的9之后停下，两者再进行交换。交换之后的数组变为a[10]={6，1，2，5，4，3，9，7，10，8}。</p><p><img src="/" class="lazyload" data-src="https:////upload-images.jianshu.io/upload_images/9137038-e7b6f35cb82e7bbf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/546/format/webp"  alt="img"></p><p>第二次的查询交换</p><p> 第二次交换至此结束。接下来，哨兵j继续向前，发小比6小的3停下来；哨兵i继续向前，发现i==j了！！！于是，这一轮的探测就要结束了，此时交换a[i]与基准的值，数组a就以6为分界线，分成了小于6和大于6的左右两部分：a[10]={3，1，2，5，4，6，9，7，10，8}。</p><p><img src="/" class="lazyload" data-src="https:////upload-images.jianshu.io/upload_images/9137038-9e4e52d1c781a312.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/527/format/webp"  alt="img"></p><p>第一轮查询交换结束</p><p>此后分为{3,1,2,5,4} 6 {9,7,10,8}，递归的左边继续上述步骤、右边继续上述步骤</p><p>以上查询交换过程摘抄自<br><a href="https://links.jianshu.com/go?to=https%3A%2F%2Fblog.csdn.net%2Fsinat_20177327%2Farticle%2Fdetails%2F76560079" target="_blank" rel="noopener">https://blog.csdn.net/sinat_20177327/article/details/76560079</a></p><h2 id="二、快排实现"><a href="#二、快排实现" class="headerlink" title="二、快排实现"></a>二、快排实现</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 快速排序算法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span>[] list, <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (left &lt; right) &#123; <span class="comment">// !!!不是while而是if</span></span><br><span class="line">        <span class="keyword">int</span> point = partition(list, left, right);</span><br><span class="line">        quickSort(list, left, point - <span class="number">1</span>);</span><br><span class="line">        quickSort(list, point + <span class="number">1</span>, right);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">partition</span><span class="params">(<span class="keyword">int</span>[] list, <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 用数组的第一个元素作为基准数</span></span><br><span class="line">    <span class="keyword">int</span> first = list[left];</span><br><span class="line">    <span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">        <span class="keyword">while</span> (left &lt; right &amp;&amp; list[right] &gt;= first) &#123;</span><br><span class="line">            right--;</span><br><span class="line">        &#125;</span><br><span class="line">        list[left] = list[right]; <span class="comment">// swap(list, left, right);</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (left &lt; right &amp;&amp; list[left] &lt;= first) &#123;</span><br><span class="line">            left++;</span><br><span class="line">        &#125;</span><br><span class="line">        list[right] = list[left];</span><br><span class="line">    &#125;</span><br><span class="line">    list[left] = first;<span class="comment">// 如果采用swap，则不需要这句</span></span><br><span class="line">    <span class="comment">// 返回分割点所在的位置</span></span><br><span class="line">    <span class="keyword">return</span> left;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 交换数组中两个位置的元素</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] list, <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp;</span><br><span class="line">    <span class="keyword">if</span> (list != <span class="keyword">null</span> &amp;&amp; list.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        temp = list[left];</span><br><span class="line">        list[left] = list[right];</span><br><span class="line">        list[right] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 快排 </tag>
             
         </tags>
       
@@ -1134,31 +1134,6 @@
     
     
     <entry>
-      <title>数据库学习笔记</title>
-      <link href="/2020/04/28/%E6%95%B0%E6%8D%AE%E5%BA%93/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-      <url>/2020/04/28/%E6%95%B0%E6%8D%AE%E5%BA%93/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-      
-        <content type="html"><![CDATA[<h3 id="三大范式"><a href="#三大范式" class="headerlink" title="三大范式"></a>三大范式</h3><p>第一范式：属性不可分割。也就是每个字段都是不可再拆分的</p><p>第二范式：非主属性完全依赖于主属性。也就是说每一行数据都可以通过主键的唯一标识获取自身其它的非主属性</p><p>第三范式：属性间不能存在传递依赖，会造成数据的冗余，这种情况需要将表拆分，并做外键关联</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 数据库 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 数据库 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>MySQL学习笔记基础篇</title>
       <link href="/2020/04/28/%E6%95%B0%E6%8D%AE%E5%BA%93/%E9%80%9A%E8%BF%87%E9%9D%A2%E8%AF%95%E9%A2%98%E5%AD%A6MySQL%E5%9F%BA%E7%A1%80%E7%AF%87/"/>
       <url>/2020/04/28/%E6%95%B0%E6%8D%AE%E5%BA%93/%E9%80%9A%E8%BF%87%E9%9D%A2%E8%AF%95%E9%A2%98%E5%AD%A6MySQL%E5%9F%BA%E7%A1%80%E7%AF%87/</url>
@@ -1178,6 +1153,31 @@
         <tags>
             
             <tag> MySQL </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>数据库学习笔记</title>
+      <link href="/2020/04/28/%E6%95%B0%E6%8D%AE%E5%BA%93/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <url>/2020/04/28/%E6%95%B0%E6%8D%AE%E5%BA%93/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+      
+        <content type="html"><![CDATA[<h3 id="三大范式"><a href="#三大范式" class="headerlink" title="三大范式"></a>三大范式</h3><p>第一范式：属性不可分割。也就是每个字段都是不可再拆分的</p><p>第二范式：非主属性完全依赖于主属性。也就是说每一行数据都可以通过主键的唯一标识获取自身其它的非主属性</p><p>第三范式：属性间不能存在传递依赖，会造成数据的冗余，这种情况需要将表拆分，并做外键关联</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据库 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库 </tag>
             
         </tags>
       

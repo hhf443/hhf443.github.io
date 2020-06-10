@@ -249,33 +249,6 @@
     
     
     <entry>
-      <title>SpringBoot核心概念</title>
-      <link href="/2020/05/22/Java/SpringBoot%E9%9D%A2%E8%AF%95%E9%A2%98%E9%94%A6%E9%9B%86/"/>
-      <url>/2020/05/22/Java/SpringBoot%E9%9D%A2%E8%AF%95%E9%A2%98%E9%94%A6%E9%9B%86/</url>
-      
-        <content type="html"><![CDATA[<h2 id="1、什么是-Spring-Boot？"><a href="#1、什么是-Spring-Boot？" class="headerlink" title="1、什么是 Spring Boot？"></a>1、什么是 Spring Boot？</h2><p>Spring Boot 是 Spring 开源组织下的子项目，是 Spring 组件一站式解决方案，主要是简化了使用 Spring 的难度，简省了繁重的配置，提供了各种启动器，开发者能快速上手</p><h2 id="2、自动装配原理"><a href="#2、自动装配原理" class="headerlink" title="2、自动装配原理"></a>2、自动装配原理</h2><p>在SpringBoot启动类中会加注解<code>@SpringBootApplication</code></p><p>点入注解之后会发现封装了<code>@ComponentScan</code>、<code>@SpringBootConfiguration</code>、<code>@EnableAutoConfiguration</code>注解</p><p><code>@ComponentScan</code>：自动扫描并加载符合条件的Bean到容器中</p><p><code>@SpringBootConfiguration</code>：对<code>Configuration</code>注解的一个封装，指明是配置类</p><p><code>@EnableAutoConfiguration</code>：是主要的，利用<code>@Import</code>注解，将所有符合自动装配条件的bean注入到IOC容器中</p><p>总结：</p><p>@EnableAutoConfiguration作用就是从classpath中搜寻所有的META-INF/spring.factories配置文件，并将其中org.springframework.boot.autoconfigure.EnableutoConfiguration对应的配置项通过反射（Java Refletion）实例化为对应的标注了@Configuration的JavaConfig形式的IoC容器配置类，然后汇总为一个并加载到IoC容器。这些功能配置类要生效的话，会去classpath中找是否有该类的依赖类（也就是pom.xml必须有对应功能的jar包才行）并且配置类里面注入了默认属性值类，功能类可以引用并赋默认值。生成功能类的原则是自定义优先，没有自定义时才会使用自动装配类。</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Import</span>(&#123;AutoConfigurationImportSelector<span class="class">.<span class="keyword">class</span>&#125;)</span></span><br><span class="line"><span class="class"><span class="title">public</span> @<span class="title">interface</span> <span class="title">EnableAutoConfiguration</span> </span>&#123;</span><br><span class="line">    String ENABLED_OVERRIDE_PROPERTY = <span class="string">"spring.boot.enableautoconfiguration"</span>;</span><br><span class="line"></span><br><span class="line">    Class&lt;?&gt;[] exclude() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">    String[] excludeName() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p> <code>AutoConfigurationImportSelector.class</code>类中有个方法<code>selectImports</code>，首先判断是否禁用了自动配置，没有的话就执行以下步骤：</p><ol><li><p>加载META-INF/spring-autoconfigure-metadata.properties文件</p></li><li><p>获取注解的属性及其值（PS：注解指的是@EnableAutoConfiguration注解）</p></li><li><p>在classpath下所有的META-INF/spring.factories文件中查找org.springframework.boot.autoconfigure.EnableAutoConfiguration的值，并将其封装到一个List中返回</p></li><li><p>对上一步返回的List中的元素去重、排序</p></li><li><p>依据第2步中获取的属性值排除一些特定的类</p></li><li><p>对上一步中所得到的List进行过滤，过滤的依据是条件匹配。</p></li></ol><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> String[] selectImports(AnnotationMetadata annotationMetadata) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>.isEnabled(annotationMetadata)) &#123;</span><br><span class="line">            <span class="keyword">return</span> NO_IMPORTS;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            AutoConfigurationMetadata autoConfigurationMetadata = AutoConfigurationMetadataLoader.loadMetadata(<span class="keyword">this</span>.beanClassLoader);</span><br><span class="line">            AnnotationAttributes attributes = <span class="keyword">this</span>.getAttributes(annotationMetadata);</span><br><span class="line">            List&lt;String&gt; configurations = <span class="keyword">this</span>.getCandidateConfigurations(annotationMetadata, attributes);</span><br><span class="line">            configurations = <span class="keyword">this</span>.removeDuplicates(configurations);</span><br><span class="line">            Set&lt;String&gt; exclusions = <span class="keyword">this</span>.getExclusions(annotationMetadata, attributes);</span><br><span class="line">            <span class="keyword">this</span>.checkExcludedClasses(configurations, exclusions);</span><br><span class="line">            configurations.removeAll(exclusions);</span><br><span class="line">            configurations = <span class="keyword">this</span>.filter(configurations, autoConfigurationMetadata);</span><br><span class="line">            <span class="keyword">this</span>.fireAutoConfigurationImportEvents(configurations, exclusions);</span><br><span class="line">            <span class="keyword">return</span> StringUtils.toStringArray(configurations);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
-      
-      
-      <categories>
-          
-          <category> Java </category>
-          
-          <category> SpringBoot </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> SpringBoot </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>Spring核心概念</title>
       <link href="/2020/05/22/Java/Spring%E9%9D%A2%E8%AF%95%E9%A2%98%E9%94%A6%E9%9B%86/"/>
       <url>/2020/05/22/Java/Spring%E9%9D%A2%E8%AF%95%E9%A2%98%E9%94%A6%E9%9B%86/</url>
@@ -295,6 +268,33 @@
         <tags>
             
             <tag> Spring </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SpringBoot核心概念</title>
+      <link href="/2020/05/22/Java/SpringBoot%E9%9D%A2%E8%AF%95%E9%A2%98%E9%94%A6%E9%9B%86/"/>
+      <url>/2020/05/22/Java/SpringBoot%E9%9D%A2%E8%AF%95%E9%A2%98%E9%94%A6%E9%9B%86/</url>
+      
+        <content type="html"><![CDATA[<h2 id="1、什么是-Spring-Boot？"><a href="#1、什么是-Spring-Boot？" class="headerlink" title="1、什么是 Spring Boot？"></a>1、什么是 Spring Boot？</h2><p>Spring Boot 是 Spring 开源组织下的子项目，是 Spring 组件一站式解决方案，主要是简化了使用 Spring 的难度，简省了繁重的配置，提供了各种启动器，开发者能快速上手</p><h2 id="2、自动装配原理"><a href="#2、自动装配原理" class="headerlink" title="2、自动装配原理"></a>2、自动装配原理</h2><p>在SpringBoot启动类中会加注解<code>@SpringBootApplication</code></p><p>点入注解之后会发现封装了<code>@ComponentScan</code>、<code>@SpringBootConfiguration</code>、<code>@EnableAutoConfiguration</code>注解</p><p><code>@ComponentScan</code>：自动扫描并加载符合条件的Bean到容器中</p><p><code>@SpringBootConfiguration</code>：对<code>Configuration</code>注解的一个封装，指明是配置类</p><p><code>@EnableAutoConfiguration</code>：是主要的，利用<code>@Import</code>注解，将所有符合自动装配条件的bean注入到IOC容器中</p><p>总结：</p><p>@EnableAutoConfiguration作用就是从classpath中搜寻所有的META-INF/spring.factories配置文件，并将其中org.springframework.boot.autoconfigure.EnableutoConfiguration对应的配置项通过反射（Java Refletion）实例化为对应的标注了@Configuration的JavaConfig形式的IoC容器配置类，然后汇总为一个并加载到IoC容器。这些功能配置类要生效的话，会去classpath中找是否有该类的依赖类（也就是pom.xml必须有对应功能的jar包才行）并且配置类里面注入了默认属性值类，功能类可以引用并赋默认值。生成功能类的原则是自定义优先，没有自定义时才会使用自动装配类。</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Import</span>(&#123;AutoConfigurationImportSelector<span class="class">.<span class="keyword">class</span>&#125;)</span></span><br><span class="line"><span class="class"><span class="title">public</span> @<span class="title">interface</span> <span class="title">EnableAutoConfiguration</span> </span>&#123;</span><br><span class="line">    String ENABLED_OVERRIDE_PROPERTY = <span class="string">"spring.boot.enableautoconfiguration"</span>;</span><br><span class="line"></span><br><span class="line">    Class&lt;?&gt;[] exclude() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">    String[] excludeName() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p> <code>AutoConfigurationImportSelector.class</code>类中有个方法<code>selectImports</code>，首先判断是否禁用了自动配置，没有的话就执行以下步骤：</p><ol><li><p>加载META-INF/spring-autoconfigure-metadata.properties文件</p></li><li><p>获取注解的属性及其值（PS：注解指的是@EnableAutoConfiguration注解）</p></li><li><p>在classpath下所有的META-INF/spring.factories文件中查找org.springframework.boot.autoconfigure.EnableAutoConfiguration的值，并将其封装到一个List中返回</p></li><li><p>对上一步返回的List中的元素去重、排序</p></li><li><p>依据第2步中获取的属性值排除一些特定的类</p></li><li><p>对上一步中所得到的List进行过滤，过滤的依据是条件匹配。</p></li></ol><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> String[] selectImports(AnnotationMetadata annotationMetadata) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>.isEnabled(annotationMetadata)) &#123;</span><br><span class="line">            <span class="keyword">return</span> NO_IMPORTS;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            AutoConfigurationMetadata autoConfigurationMetadata = AutoConfigurationMetadataLoader.loadMetadata(<span class="keyword">this</span>.beanClassLoader);</span><br><span class="line">            AnnotationAttributes attributes = <span class="keyword">this</span>.getAttributes(annotationMetadata);</span><br><span class="line">            List&lt;String&gt; configurations = <span class="keyword">this</span>.getCandidateConfigurations(annotationMetadata, attributes);</span><br><span class="line">            configurations = <span class="keyword">this</span>.removeDuplicates(configurations);</span><br><span class="line">            Set&lt;String&gt; exclusions = <span class="keyword">this</span>.getExclusions(annotationMetadata, attributes);</span><br><span class="line">            <span class="keyword">this</span>.checkExcludedClasses(configurations, exclusions);</span><br><span class="line">            configurations.removeAll(exclusions);</span><br><span class="line">            configurations = <span class="keyword">this</span>.filter(configurations, autoConfigurationMetadata);</span><br><span class="line">            <span class="keyword">this</span>.fireAutoConfigurationImportEvents(configurations, exclusions);</span><br><span class="line">            <span class="keyword">return</span> StringUtils.toStringArray(configurations);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> Java </category>
+          
+          <category> SpringBoot </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SpringBoot </tag>
             
         </tags>
       
@@ -405,6 +405,33 @@
     
     
     <entry>
+      <title>Java中的浅拷贝与深拷贝</title>
+      <link href="/2020/05/21/Java/Java%E4%B8%AD%E7%9A%84%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B7%B1%E6%8B%B7%E8%B4%9D/"/>
+      <url>/2020/05/21/Java/Java%E4%B8%AD%E7%9A%84%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B7%B1%E6%8B%B7%E8%B4%9D/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>Java 中的数据类型分为基本数据类型和引用数据类型。对于这两种数据类型，在进行赋值操作、用作方法参数或返回值时，会有值传递和引用（地址）传递的差别。</p></blockquote><h2 id="一、拷贝分类"><a href="#一、拷贝分类" class="headerlink" title="一、拷贝分类"></a>一、拷贝分类</h2><ul><li>引用拷贝 （==）</li><li>对象拷贝 （.clone()）</li><li>浅拷贝（.clone()）</li><li>深拷贝（.clone().clone()）</li></ul><p><strong>注意：浅拷贝与深拷贝都属于对象拷贝</strong></p><p>浅拷贝：基本数据类型拷贝值，引用类型拷贝内存地址，修改基本数据类型不会对原对象产生影响，修改引用类型会对原对象产生影响。被拷贝对象通过实现 <code>Cloneable</code> 并重写 <code>clone()</code> 方法来实现浅拷贝。</p><p>深拷贝：基本数据类型拷贝值，引用类型拷贝会新建一个对象空间（新地址）拷贝里面的内容，修改基本数据类型和修改引用类型都不会对原对象产生影响。有多层对象的，每个对象都需要实现 <code>Cloneable</code> 并重写 <code>clone()</code> 方法，进而实现了对象的串行层层拷贝。</p><h2 id="二、引用拷贝"><a href="#二、引用拷贝" class="headerlink" title="二、引用拷贝"></a>二、引用拷贝</h2><p>拷贝的是内存地址，所以更改拷贝值也会更改原值</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Teacher teacher = <span class="keyword">new</span> Teacher(<span class="string">"Taylor"</span>,<span class="number">26</span>);</span><br><span class="line">Teacher otherteacher = teacher;</span><br><span class="line">System.out.println(teacher);</span><br><span class="line">System.out.println(otherteacher);</span><br><span class="line"></span><br><span class="line">输出</span><br><span class="line">blog.Teacher@<span class="number">355</span>da254</span><br><span class="line">blog.Teacher@<span class="number">355</span>da254</span><br></pre></td></tr></table></figure><p><img src="/" class="lazyload" data-src="https://gitee.com/hofe/graph/raw/master/img/20200521114815.png"  alt=""></p><h2 id="三、对象拷贝"><a href="#三、对象拷贝" class="headerlink" title="三、对象拷贝"></a>三、对象拷贝</h2><p>地址是不同的，也就是说创建了新的对象， 而不是把原对象的地址赋给了一个新的引用变量,这就叫做对象拷贝（浅拷贝的默认实现）。</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Teacher teacher = <span class="keyword">new</span> Teacher(<span class="string">"Swift"</span>,<span class="number">26</span>);</span><br><span class="line">Teacher otherteacher = (Teacher)teacher.clone();</span><br><span class="line">System.out.println(teacher);</span><br><span class="line">System.out.println(otherteacher);</span><br><span class="line"></span><br><span class="line">blog.Teacher@<span class="number">355</span>da254</span><br><span class="line">blog.Teacher@<span class="number">4</span>dc63996</span><br></pre></td></tr></table></figure><p><img src="/" class="lazyload" data-src="https://gitee.com/hofe/graph/raw/master/img/20200521115052.png"  alt=""></p><h3 id="3-1-浅拷贝"><a href="#3-1-浅拷贝" class="headerlink" title="3.1 浅拷贝"></a>3.1 浅拷贝</h3><p>浅拷贝是按位拷贝对象，它会创建一个新对象，这个对象有着原始对象属性值的一份精确拷贝。如果属性是<strong>基本类型，拷贝的就是基本类型的值</strong>；如果属性是内存地址（<strong>引用类型</strong>），拷贝的就是内存地址 ，因此如果其中一个对象<strong>改变了这个地址，就会影响到另一个对象</strong>。即<strong>默认拷贝构造函数只是对对象进行浅拷贝</strong>复制(逐个成员依次拷贝)，即只复制对象空间而不复制资源。</p><h3 id="3-2-深拷贝"><a href="#3-2-深拷贝" class="headerlink" title="3.2 深拷贝"></a>3.2 深拷贝</h3><p>深拷贝，在拷贝引用类型成员变量时，为引用类型的数据成员另辟了一个独立的内存空间，实现真正内容上的拷贝。<strong>基础数据类型或者引用类型，对其中一个对象修改该值，不会影响另外一个</strong>。每个对象都需要实现 <code>Cloneable</code> 并重写 <code>clone()</code> 方法，进而实现了对象的串行层层拷贝。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Java </category>
+          
+          <category> 基础 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 深浅拷贝 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>理解同步、异步、阻塞和非阻塞</title>
       <link href="/2020/05/21/Java/Java%20IO%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
       <url>/2020/05/21/Java/Java%20IO%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
@@ -426,33 +453,6 @@
             <tag> 转载 </tag>
             
             <tag> IO </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Java中的浅拷贝与深拷贝</title>
-      <link href="/2020/05/21/Java/Java%E4%B8%AD%E7%9A%84%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B7%B1%E6%8B%B7%E8%B4%9D/"/>
-      <url>/2020/05/21/Java/Java%E4%B8%AD%E7%9A%84%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B7%B1%E6%8B%B7%E8%B4%9D/</url>
-      
-        <content type="html"><![CDATA[<blockquote><p>Java 中的数据类型分为基本数据类型和引用数据类型。对于这两种数据类型，在进行赋值操作、用作方法参数或返回值时，会有值传递和引用（地址）传递的差别。</p></blockquote><h2 id="一、拷贝分类"><a href="#一、拷贝分类" class="headerlink" title="一、拷贝分类"></a>一、拷贝分类</h2><ul><li>引用拷贝 （==）</li><li>对象拷贝 （.clone()）</li><li>浅拷贝（.clone()）</li><li>深拷贝（.clone().clone()）</li></ul><p><strong>注意：浅拷贝与深拷贝都属于对象拷贝</strong></p><p>浅拷贝：基本数据类型拷贝值，引用类型拷贝内存地址，修改基本数据类型不会对原对象产生影响，修改引用类型会对原对象产生影响。被拷贝对象通过实现 <code>Cloneable</code> 并重写 <code>clone()</code> 方法来实现浅拷贝。</p><p>深拷贝：基本数据类型拷贝值，引用类型拷贝会新建一个对象空间（新地址）拷贝里面的内容，修改基本数据类型和修改引用类型都不会对原对象产生影响。有多层对象的，每个对象都需要实现 <code>Cloneable</code> 并重写 <code>clone()</code> 方法，进而实现了对象的串行层层拷贝。</p><h2 id="二、引用拷贝"><a href="#二、引用拷贝" class="headerlink" title="二、引用拷贝"></a>二、引用拷贝</h2><p>拷贝的是内存地址，所以更改拷贝值也会更改原值</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Teacher teacher = <span class="keyword">new</span> Teacher(<span class="string">"Taylor"</span>,<span class="number">26</span>);</span><br><span class="line">Teacher otherteacher = teacher;</span><br><span class="line">System.out.println(teacher);</span><br><span class="line">System.out.println(otherteacher);</span><br><span class="line"></span><br><span class="line">输出</span><br><span class="line">blog.Teacher@<span class="number">355</span>da254</span><br><span class="line">blog.Teacher@<span class="number">355</span>da254</span><br></pre></td></tr></table></figure><p><img src="/" class="lazyload" data-src="https://gitee.com/hofe/graph/raw/master/img/20200521114815.png"  alt=""></p><h2 id="三、对象拷贝"><a href="#三、对象拷贝" class="headerlink" title="三、对象拷贝"></a>三、对象拷贝</h2><p>地址是不同的，也就是说创建了新的对象， 而不是把原对象的地址赋给了一个新的引用变量,这就叫做对象拷贝（浅拷贝的默认实现）。</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Teacher teacher = <span class="keyword">new</span> Teacher(<span class="string">"Swift"</span>,<span class="number">26</span>);</span><br><span class="line">Teacher otherteacher = (Teacher)teacher.clone();</span><br><span class="line">System.out.println(teacher);</span><br><span class="line">System.out.println(otherteacher);</span><br><span class="line"></span><br><span class="line">blog.Teacher@<span class="number">355</span>da254</span><br><span class="line">blog.Teacher@<span class="number">4</span>dc63996</span><br></pre></td></tr></table></figure><p><img src="/" class="lazyload" data-src="https://gitee.com/hofe/graph/raw/master/img/20200521115052.png"  alt=""></p><h3 id="3-1-浅拷贝"><a href="#3-1-浅拷贝" class="headerlink" title="3.1 浅拷贝"></a>3.1 浅拷贝</h3><p>浅拷贝是按位拷贝对象，它会创建一个新对象，这个对象有着原始对象属性值的一份精确拷贝。如果属性是<strong>基本类型，拷贝的就是基本类型的值</strong>；如果属性是内存地址（<strong>引用类型</strong>），拷贝的就是内存地址 ，因此如果其中一个对象<strong>改变了这个地址，就会影响到另一个对象</strong>。即<strong>默认拷贝构造函数只是对对象进行浅拷贝</strong>复制(逐个成员依次拷贝)，即只复制对象空间而不复制资源。</p><h3 id="3-2-深拷贝"><a href="#3-2-深拷贝" class="headerlink" title="3.2 深拷贝"></a>3.2 深拷贝</h3><p>深拷贝，在拷贝引用类型成员变量时，为引用类型的数据成员另辟了一个独立的内存空间，实现真正内容上的拷贝。<strong>基础数据类型或者引用类型，对其中一个对象修改该值，不会影响另外一个</strong>。每个对象都需要实现 <code>Cloneable</code> 并重写 <code>clone()</code> 方法，进而实现了对象的串行层层拷贝。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> Java </category>
-          
-          <category> 基础 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 深浅拷贝 </tag>
             
         </tags>
       
@@ -1430,9 +1430,9 @@
       
         <tags>
             
-            <tag> 转载 </tag>
-            
             <tag> SpringBoot </tag>
+            
+            <tag> 转载 </tag>
             
         </tags>
       
